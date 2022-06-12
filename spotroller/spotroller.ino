@@ -1,45 +1,73 @@
-/* Pro Micro Test Code
-   by: Nathan Seidle
-   modified by: Jim Lindblom
-   SparkFun Electronics
-   date: September 16, 2013
-   license: Public Domain - please use this code however you'd like.
-   It's provided as a learning tool.
-
-   This code is provided to show how to control the SparkFun
-   ProMicro's TX and RX LEDs within a sketch. It also serves
-   to explain the difference between Serial.print() and
-   Serial1.print().
+/*
+    control flow code
+    date: 6/1/2022
+    by: daydreamer
 */
 
-int RXLED = 17;  // The RX LED has a defined Arduino pin
-// Note: The TX LED was not so lucky, we'll need to use pre-defined
-// macros (TXLED1, TXLED0) to control that.
-// (We could use the same macros for the RX LED too -- RXLED1,
-//  and RXLED0.)
+/* define pin function */
+int RXLED = 17;
+int play_pause_pin = 2;
+int next_pin = 3;
+int previous_pin = 4;
+int volume_change_pin = 5;
 
 void setup()
 {
-  pinMode(RXLED, OUTPUT);  // Set RX LED as an output
-  // TX LED is set as an output behind the scenes
+  pinMode(RXLED, OUTPUT);
+
+  pinMode(play_pause_pin, INPUT);  // Set the button as an input
+  digitalWrite(play_pause_pin, HIGH);  // Pull the button high
+
+  pinMode(next_pin, INPUT);  // Set the button as an input
+  digitalWrite(next_pin, HIGH);  // Pull the button high
+
+  pinMode(previous_pin, INPUT);  // Set the button as an input
+  digitalWrite(previous_pin, HIGH);  // Pull the button high
+
+  pinMode(volume_change_pin, INPUT);  // Set the button as an input
+  digitalWrite(volume_change_pin, HIGH);  // Pull the button high
 
   Serial.begin(9600); //This pipes to the serial monitor
   Serial.println("Initialize Serial Monitor");
-
-  Serial1.begin(9600); //This is the UART, pipes to sensors attached to board
-  Serial1.println("Initialize Serial Hardware UART Pins");
 }
 
 void loop()
 {
-  Serial.println("Play");  // Print "Hello World" to the Serial Monitor
-  Serial1.println("Hello! Can anybody hear me?");  // Print "Hello!" over hardware UART
+  if (digitalRead(play_pause_pin) == 0)
+  {
+    Serial.println("play_pause");
+    RXLED0;
+    RXLED1;
+    delay(800);
+    RXLED0;
+  }
 
-  digitalWrite(RXLED, LOW);   // set the RX LED ON
-  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
-  delay(1000);              // wait for a second
+  if (digitalRead(next_pin) == 0)
+  {
+    Serial.println("next");
+    RXLED0;
+    RXLED1;
+    delay(800);
+    RXLED0;
+  }
 
-  digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED1; //TX LED macro to turn LED ON
-  delay(1000);              // wait for a second
+  if (digitalRead(previous_pin) == 0)
+  {
+    Serial.println("previous");
+    RXLED0;
+    RXLED1;
+    delay(800);
+    RXLED0;
+  }
+
+  // TODO
+  if (digitalRead(volume_change_pin) == 0)
+  {
+    Serial.println("volume_up");
+    Serial.println("volume_down");
+    RXLED0;
+    RXLED1;
+    delay(800);
+    RXLED0;
+  }
 }
